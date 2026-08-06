@@ -1,0 +1,49 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# production
+/dist
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.*.local
+
+# local env files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# logs
+*.log
+
+# build outputs
+/build
+
+# testing
+/coverage
+
+# optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Vite
+/.vite
+
+# Mac
+Icon?
