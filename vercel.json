@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "//": "BrowserRouter means all routing is client-side, so any path other than / must still serve index.html. Without this, a hard refresh or a shared link to /events/<slug> returns 404 — and critically so does /payment/success, where Paystack redirects buyers after a successful charge. Vercel matches real files first, so /assets/* is served from disk and never reaches this rewrite.",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+
+  "//cache": "Vite fingerprints asset filenames (index-DxF42tUJ.js), so those are safe to cache forever. index.html itself must not be, or buyers keep loading a stale bundle after a deploy.",
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
+}
