@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'built-in' }
 
     environment {
         BACKEND_REPO = "https://github.com/Rehtegot47/Eventify.git"
@@ -55,7 +55,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${APP_NAME}:latest -f PTicketing/Dockerfile PTicketing'
+                sh 'docker build -t ${APP_NAME}:latest -f PTicketing/Dockerfile.cloudrun PTicketing'
             }
         }
 
