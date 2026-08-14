@@ -4,6 +4,7 @@ import { FiCalendar, FiMapPin, FiClock } from "react-icons/fi";
 import { getEventBySlug } from "../services/eventService";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
+import BuyOnWhatsApp from "../components/BuyOnWhatsApp";
 
 function GoogleMapEmbed({ location }) {
   const query = encodeURIComponent(location);
@@ -186,6 +187,15 @@ export default function EventDetailPage() {
               ? "Sold Out"
               : `Get Tickets \u2014 \u20A6${(ticketPrice * qty).toFixed(2)}`}
           </button>
+
+          {/* Alternative rail, not a replacement. Buying over WhatsApp delivers the
+              QR to the chat automatically, which web checkout cannot do \u2014 it collects
+              no phone number, and messaging a buyer who has never contacted us would
+              need an approved Meta template. Hidden entirely when the event is sold
+              out, since the WhatsApp flow would only reject them. */}
+          {!(maxAvailable != null && maxAvailable <= 0) && (
+            <BuyOnWhatsApp eventTitle={event.title} />
+          )}
 
           {(event.bankName || event.bankAccountNumber || event.bankAccountName) && (
             <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700">
