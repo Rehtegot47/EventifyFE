@@ -164,6 +164,14 @@ export default function DashboardPage() {
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
           Here&apos;s what&apos;s happening with your {isOrganizer ? "events" : "tickets"} today.
         </p>
+        {user?.role === "admin" && (
+          <Link
+            to="/admin"
+            className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-eventify-600 text-white rounded-lg text-sm font-medium hover:bg-eventify-700 transition"
+          >
+            Go to Admin Dashboard <FiArrowRight />
+          </Link>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

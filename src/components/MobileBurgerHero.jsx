@@ -33,13 +33,6 @@ export default function MobileBurgerHero({ containerRef }) {
   }, [containerRef]);
 
   useEffect(() => {
-    if (isMobile) {
-      cancelAnimationFrame(rafRef.current);
-      startRef.current = null;
-      setOffset(0);
-      return;
-    }
-
     const STRIP_TOTAL_W = dimensions.tileW * IMAGES.length;
 
     const animate = (ts) => {
@@ -51,11 +44,11 @@ export default function MobileBurgerHero({ containerRef }) {
 
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [dimensions.tileW, isMobile]);
+  }, [dimensions.tileW]);
 
   const allImages = [...IMAGES, ...IMAGES];
 
-  const FONT_SIZE = Math.max(120, dimensions.vw * 0.3);
+  const FONT_SIZE = Math.max(80, dimensions.vw * 0.3);
   const LINE_HEIGHT = FONT_SIZE * 1.05;
 
   const getTextProps = (lineIndex) => ({
@@ -68,65 +61,6 @@ export default function MobileBurgerHero({ containerRef }) {
       fontWeight: 900,
     },
   });
-
-  if (isMobile) {
-    const textProps = {
-      x: dimensions.vw / 2,
-      y: FONT_SIZE * 0.82,
-      textAnchor: "middle",
-      style: {
-        fontFamily: UI_FONT,
-        fontSize: FONT_SIZE,
-        fontWeight: 900,
-      },
-    };
-
-    return (
-      <div className="relative w-full">
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            aspectRatio: "1 / 0.55",
-            overflow: "hidden",
-          }}
-        >
-          <svg
-            viewBox={`0 0 ${dimensions.vw} ${dimensions.vh}`}
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-            }}
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <defs>
-              <clipPath id="letterClipMobile">
-                <text {...textProps}>EVENTIFY</text>
-              </clipPath>
-            </defs>
-
-            <rect width={dimensions.vw} height={dimensions.vh} fill="#6B7C2F" />
-            <text {...textProps} fill="#111">EVENTIFY</text>
-
-            <g clipPath="url(#letterClipMobile)">
-              <image
-                href={IMAGES[0]}
-                x={0}
-                y={0}
-                width={dimensions.vw}
-                height={dimensions.vh}
-                preserveAspectRatio="xMidYMid slice"
-              />
-            </g>
-          </svg>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative w-full">

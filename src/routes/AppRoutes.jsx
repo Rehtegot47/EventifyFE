@@ -4,6 +4,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import MainLayout from "../layouts/MainLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
+import AdminLayout from "../layouts/AdminLayout";
 
 import HomePage from "../pages/HomePage";
 import EventListPage from "../pages/EventListPage";
@@ -24,6 +25,12 @@ import ContactPage from "../pages/ContactPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage";
 import ScannerLoginPage from "../pages/ScannerLoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminEvents from "../pages/admin/AdminEvents";
+import AdminOrganizers from "../pages/admin/AdminOrganizers";
+import AdminAttendees from "../pages/admin/AdminAttendees";
+import AdminPayouts from "../pages/admin/AdminPayouts";
 
 function ProtectedRoute({ children, allowedRole }) {
   const { user, loading } = useAuth();
@@ -108,6 +115,20 @@ export default function AppRoutes() {
         }
       >
         <Route index element={<CheckoutPage />} />
+      </Route>
+
+      <Route
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/events" element={<AdminEvents />} />
+        <Route path="/admin/organizers" element={<AdminOrganizers />} />
+        <Route path="/admin/attendees" element={<AdminAttendees />} />
+        <Route path="/admin/payouts" element={<AdminPayouts />} />
       </Route>
 
       <Route path="*" element={<MainLayout />}>
