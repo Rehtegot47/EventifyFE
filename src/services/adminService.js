@@ -36,3 +36,23 @@ export async function rejectPayout(payoutId, reason) {
   });
   return data;
 }
+
+export async function submitPayoutOtp(payoutId, otp) {
+  const { data } = await api.put(`/payouts/${payoutId}/submit-otp`, { otp });
+  return data;
+}
+
+export async function resendPayoutOtp(payoutId) {
+  const { data } = await api.put(`/payouts/${payoutId}/resend-otp`);
+  return data;
+}
+
+export async function getPlatformSettings() {
+  const { data } = await api.get("/admin/settings");
+  return data;
+}
+
+export async function updatePlatformSettings(payload) {
+  const { data } = await api.put("/admin/settings", payload);
+  return data;
+}
