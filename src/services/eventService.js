@@ -53,9 +53,6 @@ function mapEventDetail(e) {
       maxPerOrder: t.maxPerOrder,
     })),
     createdAt: e.createdAt,
-    bankName: e.bankName || "",
-    bankAccountNumber: e.bankAccountNumber || "",
-    bankAccountName: e.bankAccountName || "",
   };
 }
 
@@ -91,9 +88,6 @@ function toCreatePayload(form) {
     startDate,
     endDate,
     ticketTypes,
-    bankName: form.bankName || null,
-    bankAccountNumber: form.bankAccountNumber || null,
-    bankAccountName: form.bankAccountName || null,
   };
 }
 
@@ -126,9 +120,6 @@ function toUpdatePayload(form) {
       isFree: !tt.price || Number(tt.price) === 0,
       maxPerOrder: tt.maxPerOrder || 10,
     })),
-    bankName: form.bankName || null,
-    bankAccountNumber: form.bankAccountNumber || null,
-    bankAccountName: form.bankAccountName || null,
   };
 }
 

@@ -227,27 +227,9 @@ function StepFour({ form, handleChange, ticketTypes }) {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-5">
-        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bank Transfer Details</label>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">Buyers can transfer directly to this account</p>
-        <div className="flex flex-col gap-3">
-          <div>
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Bank Name</label>
-            <input type="text" name="bankName" value={form.bankName} onChange={handleChange} placeholder="e.g. GTBank, Access Bank, Wema Bank" className={inputClass} />
-          </div>
-          <div>
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Account Number</label>
-            <input type="text" name="bankAccountNumber" value={form.bankAccountNumber} onChange={handleChange} placeholder="0123456789" maxLength={10} className={inputClass} />
-          </div>
-          <div>
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Account Name</label>
-            <input type="text" name="bankAccountName" value={form.bankAccountName} onChange={handleChange} placeholder="John Doe" className={inputClass} />
-          </div>
-        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default function CreateEventPage() {
   const navigate = useNavigate();
@@ -264,11 +246,8 @@ export default function CreateEventPage() {
     endTime: "",
     location: "",
     image: "",
-    imagePreview: "",
-    bankName: "",
-    bankAccountNumber: "",
-    bankAccountName: "",
-  });
+      imagePreview: "",
+    });
   const [ticketTypes, setTicketTypes] = useState([
     { name: "General", price: "", quantity: "", isFree: false, description: "" },
   ]);
