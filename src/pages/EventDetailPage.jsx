@@ -193,36 +193,10 @@ export default function EventDetailPage() {
               no phone number, and messaging a buyer who has never contacted us would
               need an approved Meta template. Hidden entirely when the event is sold
               out, since the WhatsApp flow would only reject them. */}
-          {!(maxAvailable != null && maxAvailable <= 0) && (
-            <BuyOnWhatsApp eventTitle={event.title} />
-          )}
-
-          {(event.bankName || event.bankAccountNumber || event.bankAccountName) && (
-            <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Bank Transfer</p>
-              <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-sm space-y-1">
-                {event.bankName && (
-                  <div className="flex justify-between text-gray-700 dark:text-gray-300">
-                    <span className="text-gray-500 dark:text-gray-400">Bank</span>
-                    <span className="font-medium">{event.bankName}</span>
-                  </div>
-                )}
-                {event.bankAccountNumber && (
-                  <div className="flex justify-between text-gray-700 dark:text-gray-300">
-                    <span className="text-gray-500 dark:text-gray-400">Account</span>
-                    <span className="font-medium font-mono">{event.bankAccountNumber}</span>
-                  </div>
-                )}
-                {event.bankAccountName && (
-                  <div className="flex justify-between text-gray-700 dark:text-gray-300">
-                    <span className="text-gray-500 dark:text-gray-400">Name</span>
-                    <span className="font-medium">{event.bankAccountName}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+            {!(maxAvailable != null && maxAvailable <= 0) && (
+              <BuyOnWhatsApp eventTitle={event.title} />
+            )}
+          </div>
       </div>
     </div>
   );
