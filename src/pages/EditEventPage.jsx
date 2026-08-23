@@ -20,12 +20,9 @@ export default function EditEventPage() {
     categoryId: "",
     type: "NORMAL",
     image: "",
-    imagePreview: "",
-    ticketTypes: [{ name: "General", price: 0, quantity: 100, description: "" }],
-    bankName: "",
-    bankAccountNumber: "",
-    bankAccountName: "",
-  });
+      imagePreview: "",
+      ticketTypes: [{ name: "General", price: 0, quantity: 100, description: "" }],
+    });
   const [eventId, setEventId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,11 +57,8 @@ export default function EditEventPage() {
                 quantity: tt.quantity || 100,
                 description: tt.description || "",
               }))
-            : [{ name: "General", price: 0, quantity: 100, description: "" }],
-          bankName: evt.bankName || "",
-          bankAccountNumber: evt.bankAccountNumber || "",
-          bankAccountName: evt.bankAccountName || "",
-        });
+              : [{ name: "General", price: 0, quantity: 100, description: "" }],
+          });
       }
     }).catch(() => toast.error("Event not found"))
       .finally(() => setLoading(false));
@@ -241,26 +235,9 @@ export default function EditEventPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-5">
-          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bank Transfer Details</label>
-          <div className="flex flex-col gap-3 mt-3">
-            <div>
-              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Bank Name</label>
-              <input type="text" name="bankName" value={form.bankName} onChange={handleChange} placeholder="e.g. GTBank, Access Bank" className={inputClass} />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Account Number</label>
-              <input type="text" name="bankAccountNumber" value={form.bankAccountNumber} onChange={handleChange} placeholder="0123456789" maxLength={10} className={inputClass} />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Account Name</label>
-              <input type="text" name="bankAccountName" value={form.bankAccountName} onChange={handleChange} placeholder="John Doe" className={inputClass} />
-            </div>
           </div>
-        </div>
-        <button
+
+          <button
           type="submit"
           disabled={submitting}
           className="w-full bg-eventify-500 text-white py-3 rounded-lg font-semibold hover:bg-eventify-600 transition disabled:opacity-60 mt-2 cursor-pointer"
