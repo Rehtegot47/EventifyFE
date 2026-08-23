@@ -36,3 +36,10 @@ export async function rejectPayout(payoutId, reason) {
   });
   return data;
 }
+
+export async function forceFailPayout(payoutId, reason) {
+  const { data } = await api.put(`/payouts/${payoutId}/force-fail`, null, {
+    params: { reason },
+  });
+  return data;
+}
