@@ -6,6 +6,7 @@ import {
   rejectPayout,
   submitPayoutOtp,
   resendPayoutOtp,
+  forceFailPayout,
 } from "../../services/adminService";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
@@ -52,6 +53,8 @@ export default function AdminPayouts() {
   const [otpValue, setOtpValue] = useState("");
   const [otpError, setOtpError] = useState("");
   const [busyId, setBusyId] = useState(null);
+  const [forceFailModal, setForceFailModal] = useState(null);
+  const [forceFailReason, setForceFailReason] = useState("");
 
   const load = () => {
     getAdminPayouts()
@@ -131,6 +134,19 @@ export default function AdminPayouts() {
     }
   };
 
+  const handleForceFail = async () => {
+    if (!forceFailModal) return;
+    try {
+      await forceFailPayout(forceFailModal.id, forceFailReason || null);
+      toast.success("Payout force-failed");
+      setForceFailModal(null);
+      setForceFailReason("");
+      load();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to force-fail payout");
+    }
+  };
+
   const filtered = payouts.filter(
     (p) => filter === "ALL" || p.status === filter
   );
@@ -186,6 +202,14 @@ export default function AdminPayouts() {
                   >
                     {STATUS_LABELS[payout.status] || payout.status}
                   </span>
+                  {payout.accountNameMismatch && (
+                    <span
+                      className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      title="Destination account name shares no token with the organiser's signup name, or was not verified"
+                    >
+                      Name mismatch
+                    </span>
+                  )}
                   {payout.status === "PENDING" && (
                     <SlaBadge responseDueAt={payout.responseDueAt} />
                   )}
@@ -258,17 +282,30 @@ export default function AdminPayouts() {
               )}
 
               {payout.status === "OTP_PENDING" && (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      setOtpValue("");
-                      setOtpError("");
-                      setOtpModal(payout);
-                    }}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition cursor-pointer"
-                  >
-                    Enter OTP
-                  </button>
+                <div className="flex flex-col items-end gap-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-[16rem] text-right">
+                    Waiting for the Paystack OTP (expires after 30 minutes).
+                    Enter or resend it, or force-fail to release the funds back
+                    to the organiser.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setOtpValue("");
+                        setOtpError("");
+                        setOtpModal(payout);
+                      }}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition cursor-pointer"
+                    >
+                      Enter OTP
+                    </button>
+                    <button
+                      onClick={() => setForceFailModal(payout)}
+                      className="px-4 py-2 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-200 dark:hover:bg-red-900/50 transition cursor-pointer"
+                    >
+                      Force Fail
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -364,6 +401,47 @@ export default function AdminPayouts() {
                   Submit OTP
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {forceFailModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Force Fail Payout
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              Force-failing #{forceFailModal.id} for{" "}
+              {Number(forceFailModal.amount).toLocaleString()} to{" "}
+              {forceFailModal.userName}. The backend checks with Paystack first —
+              if the transfer actually completed, it settles as paid instead.
+              Funds return to the organiser's balance.
+            </p>
+            <textarea
+              value={forceFailReason}
+              onChange={(e) => setForceFailReason(e.target.value)}
+              placeholder="Reason (optional)"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm outline-none focus:ring-2 focus:ring-eventify-500 mb-4"
+              rows={3}
+            />
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => {
+                  setForceFailModal(null);
+                  setForceFailReason("");
+                }}
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleForceFail}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition cursor-pointer"
+              >
+                Force Fail
+              </button>
             </div>
           </div>
         </div>
